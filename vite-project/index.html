@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sand Production Risk Assessment App</title>
+  <link rel="stylesheet" href="/src/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="light-mode">
+  <div class="app-container">
+    <h1>Sand Production Risk Assessment App</h1>
+
+    <!-- Light/Dark Mode Toggle on Home Screen -->
+    <div class="theme-toggle-container">
+      <label for="themeToggle">Toggle Theme:</label>
+      <select id="themeToggle" onchange="toggleTheme()">
+        <option value="light">Light Mode</option>
+        <option value="dark">Dark Mode</option>
+      </select>
+    </div>
+
+    <!-- Main Dashboard with Mode Selection -->
+    <div id="authContainer" class="centered-section">
+      <button onclick="showGuestMode()">Continue as Guest</button>
+      <button onclick="showLoginForm()">Log In / Register</button>
+    </div>
+
+    <!-- Login/Register Form -->
+    <div id="loginForm" class="centered-section" style="display: none;">
+      <h3>Log In or Register</h3>
+      <input type="email" id="email" placeholder="Email">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Log In</button>
+      <button onclick="register()">Register</button>
+      <button onclick="hideLoginForm()">Back</button>
+      <button onclick="resetPassword()">Forgot Password?</button>
+    </div>
+
+    <!-- Main App Content -->
+    <div id="appContent" style="display: none;">
+      <!-- Profile Dropdown Menu for Registered Users Only -->
+      <div class="profile-container" id="profileContainer" style="display: none;">
+        <button onclick="toggleProfileMenu()" class="profile-button" id="usernameDisplay">Profile</button>
+        <div id="profileMenu" class="dropdown-menu" style="display: none;">
+          <button onclick="viewProfile()">View Profile</button>
+          <button onclick="signOutUser()">Sign Out</button>
+        </div>
+      </div>
+
+      <!-- On-Demand Assessment Section -->
+      <div id="assessmentSection" class="app-section">
+        <h3>On-Demand Assessment</h3>
+
+        <!-- Basic Variables -->
+        <label for="flowRate">Flow Rate (bbl/day):</label>
+        <input type="number" id="flowRate" placeholder="750">
+        <label for="sandConcentration">Sand Concentration (ppm):</label>
+        <input type="number" id="sandConcentration" placeholder="250">
+
+        <!-- Optional Variables -->
+        <label for="shearStress">Shear Stress (τ, N/m²):</label>
+        <input type="number" id="shearStress" placeholder="20">
+        <label for="grainSize">Sediment Grain Size (D, mm):</label>
+        <input type="number" id="grainSize" placeholder="0.5">
+        <label for="fluidDensity">Fluid Density (ρ, kg/m³):</label>
+        <input type="number" id="fluidDensity" placeholder="850">
+        <label for="fluidViscosity">Fluid Viscosity (μ, cp):</label>
+        <input type="number" id="fluidViscosity" placeholder="0.5">
+        <label for="bedSlope">Bed Slope (S, %):</label>
+        <input type="number" id="bedSlope" placeholder="5">
+        <label for="concentrationProfile">Sediment Concentration Profile:</label>
+        <input type="number" id="concentrationProfile" placeholder="0.8">
+        
+        <button onclick="assessRisk()">Assess Risk</button>
+        <button id="saveAssessmentButton" onclick="saveAssessment()" style="display: none;">Save Assessment</button>
+
+        <!-- Graph Type Selection -->
+        <label for="graphType">Select Graph Type:</label>
+        <select id="graphType" onchange="updateGraph()">
+          <option value="scatter">Scatter Plot (Color-Coded Risk)</option>
+          <option value="line">Risk Trend Over Time (Line Chart)</option>
+          <option value="radar">Parameter Contributions (Radar Chart)</option>
+        </select>
+
+        <div id="result"></div>
+        <canvas id="assessmentChart" width="400" height="200"></canvas>
+      </div>
+
+      <!-- Profile Data Section for Registered Users Only -->
+      <div id="profileData" style="display: none;">
+        <h3>Your Profile and Saved Assessments</h3>
+        <div id="savedAssessments">
+          <p>Loading saved assessments...</p>
+        </div>
+        <button onclick="goBackToAssessment()">Back to Assessment</button>
+      </div>
+
+      <!-- Return to Home for Guest Users -->
+      <button id="returnHomeButton" style="display: none;" onclick="returnToHome()">Return to Home</button>
+    </div>
+  </div>
+
+  <!-- Firebase and App JS -->
+  <script type="module" src="/src/firebaseConfig.js"></script>
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>
